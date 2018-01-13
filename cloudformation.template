@@ -1,6 +1,14 @@
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
   "Description" : "AWS CloudFormation CloudWatch Log Janitor Demo Stack",
+  "Parameters" : {
+    "S3BucketName" : {
+      "Type" : "String"
+    },
+    "S3ObjectKey" : {
+      "Type" : "String"
+    }
+  },
   "Resources" : {
     "DemoLambdaExecutionRole" : {
       "Type" : "AWS::IAM::Role",
@@ -45,11 +53,11 @@
       "DependsOn" : [ "DemoLambdaExecutionRole", "DemoLambdaExecutionPolicy" ],
       "Properties" : {
         "Code" : {
-          "BucketName" : {
-            "Fn::GetArtifactAtt" : [ "LambdaFunctionSource", "BucketName" ]
+          "S3Bucket" : {
+            "Ref" : "S3BucketName"
           },
-          "ObjectKey" : {
-            "Fn::GetArtifactAtt" : [ "LambdaFunctionSource", "ObjectKey" ]
+          "S3Key" : {
+            "Ref" : "S3ObjectKey"
           }
         },
         "Role" : {
